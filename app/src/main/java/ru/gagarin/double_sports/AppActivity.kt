@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.core.view.WindowCompat
 import ru.gagarin.double_sports.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
-    lateinit var webView: WebView
+    private lateinit var webView: WebView
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         // Check if the key event was the Back button and if there's history
