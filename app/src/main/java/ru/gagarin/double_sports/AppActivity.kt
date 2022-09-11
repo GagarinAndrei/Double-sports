@@ -2,13 +2,12 @@ package ru.gagarin.double_sports
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
 import ru.gagarin.double_sports.databinding.ActivityAppBinding
 
 class AppActivity : AppCompatActivity() {
@@ -27,26 +26,28 @@ class AppActivity : AppCompatActivity() {
 
         val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         myWebView = binding.webView
+        myWebView.apply {
+            loadUrl("https://double-sports.ru/")
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+            settings.javaScriptCanOpenWindowsAutomatically = true
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView,
+                    request: WebResourceRequest
+                ): Boolean {
+                    val isLinkInList = myLinks.contains(request.url.toString())
 
-        myWebView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                request: WebResourceRequest
-            ): Boolean {
-                val isLinkInList = myLinks.contains(request.url.toString())
-
-                return if (isLinkInList) {
-                    val intent = Intent(Intent.ACTION_VIEW, request.url)
-                    startActivity(intent)
-                    true
-                } else false
+                    return if (isLinkInList) {
+                        val intent = Intent(Intent.ACTION_VIEW, request.url)
+                        startActivity(intent)
+                        true
+                    } else false
+                }
             }
         }
-        myWebView.settings.javaScriptEnabled = true
-        myWebView.loadUrl("https://double-sports.ru/")
-
-
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
